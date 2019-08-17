@@ -1,0 +1,1958 @@
+The following files were submitted:
+----------------------------------
+ 2.6K Jul  1 15:06 LFSR.java
+ 1.9K Jul  1 06:54 PhotoMagic.java
+ 2.2K Jun 30 23:55 readme.txt
+
+
+
+*** LATE FILES ***
+  * readme.txt: 4 days late
+  * LFSR.java: 5 days late
+  * PhotoMagic.java: 5 days late
+
+This assignment is 5 days late.
+
+|---------------------Free Late Day Ledger---------------------|
+|netid      |used on another |used on this    |remaining       |
+|--------------------------------------------------------------|
+
+|-----------------------LATENESS PENALTY-----------------------|
+|  - 20% of possible total for 1  day beyond free late days.   |
+|--------------------------------------------------------------|
+********************************************************************************
+*  COMPILING
+********************************************************************************
+
+
+% javac LFSR.java
+*-----------------------------------------------------------
+
+% javac PhotoMagic.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+LFSR:
+
+PhotoMagic:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS
+********************************************************************************
+
+
+% spotbugs *.class
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+LFSR.java:13: The private instance (or static) variable 'n' can be made 'final'; it is initialized only in the declaration or constructor. [ImmutableField]
+LFSR.java:15: The private instance (or static) variable 'tapPosition' can be made 'final'; it is initialized only in the declaration or constructor. [ImmutableField]
+PhotoMagic.java:31: Avoid unused local variables, such as 'r'. [UnusedLocalVariable]
+PhotoMagic.java:32: Avoid unused local variables, such as 'g'. [UnusedLocalVariable]
+PhotoMagic.java:33: Avoid unused local variables, such as 'b'. [UnusedLocalVariable]
+PMD ends with 5 warnings.
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+[WARN] LFSR.java:1: Invalid, empty, or missing 'Description' in header. [Header]
+[WARN] LFSR.java:92:24: The 'main()' method must directly call the public method 'generate()'. [MainCallsAllPublicMethods]
+[WARN] PhotoMagic.java:41: Line length is 94 characters (max allowed is 87). [LineLength]
+Checkstyle ends with 0 errors and 3 warnings.
+
+% custom checkstyle checks for LFSR.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for PhotoMagic.java
+*-----------------------------------------------------------
+[ERROR] PhotoMagic.java:1: The static method 'transform()' does not use the exclusive OR (^) operator. [Design]
+[ERROR] PhotoMagic.java:21:29: The numeric literal '10' appears to be unnecessary. [NumericLiteral]
+[ERROR] PhotoMagic.java:22:35: The numeric literal '5' appears to be unnecessary. [NumericLiteral]
+[ERROR] PhotoMagic.java:23:27: Do not print to standard output in this program. [SideEffect]
+Checkstyle ends with 4 errors and 0 warnings.
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of LFSR
+*-----------------------------------------------------------
+Running 23 total tests.
+
+Test 1: check length() with no intervening calls to step() or generate()
+  * seed = "01101000010", tap = 9
+  * seed = "01101000010", tap = 4
+  * seed = "01101000010100010000", tap = 17
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59
+==> passed
+
+Test 2: check bitAt() with no intervening calls to step() or generate()
+  * seed = "01101000010", tap = 9
+  * seed = "01101000010", tap = 4
+  * seed = "01101000010100010000", tap = 17
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59
+==> passed
+
+Test 3: check toString() with no intervening calls to step() or generate()
+  * seed = "01101000010", tap = 9
+  * seed = "01101000010", tap = 4
+  * seed = "01101000010100010000", tap = 17
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59
+==> passed
+
+Test 4a: check step() and toString() with seed and tap from assignment specification
+  * seed = "01101000010", tap = 9
+    01101000010
+    11010000101 1
+    10100001011 1
+    01000010110 0
+    10000101101 1
+    - student step() returns wrong value
+    - student   step() = 1
+    - reference step() = 0
+
+==> FAILED
+
+Test 4b: check generate(k) and toString() with seed and tap from assignment specification
+  * seed = "01101000010", tap = 9, k = 5
+    01101000010
+    11011111101 1789
+    - student generate(5) returns wrong value
+    - student   generate(5) = 1789
+    - reference generate(5) = 25
+
+==> FAILED
+
+Test 5a: check step() with seeds and taps from checklist
+  * seed = "01101000010", tap = 9
+    - failed on step 4 of 100000
+    - student   = 1
+    - reference = 0
+
+  * seed = "01101000010", tap = 4
+    - failed on step 1 of 100000
+    - student   = 1
+    - reference = 0
+
+  * seed = "01101000010100010000", tap = 17
+    - failed on step 2 of 100000
+    - student   = 1
+    - reference = 0
+
+  * seed = "010101010101010101010101010101", tap = 23
+    - failed on step 8 of 100000
+    - student   = 0
+    - reference = 1
+
+  * seed = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+    - failed on step 2 of 100000
+    - student   = 0
+    - reference = 1
+
+==> FAILED
+
+Test 5b: check step() with random seeds and taps
+  * random seeds of length 3 to 10
+    - failed on step 3 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "000011100"
+    - tap  = 4
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 to 20
+    - failed on step 4 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "0011101010111"
+    - tap  = 11
+    - failed on trial 1 of 100
+
+  * random seeds of length 20 to 30
+    - failed on step 2 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "0100000111100111000000"
+    - tap  = 7
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 5c: check step() with random seeds of length >= 30
+  * random seeds of length 30 to 60
+    - failed on step 2 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "1110111110110100011101100010110001100101010001000"
+    - tap  = 3
+    - failed on trial 1 of 100
+
+  * random seeds of length 60 to 200
+    - failed on step 1 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "11101101001011110111110100010010100101110101111110100110101000000101011001110100110100101"
+    - tap  = 7
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 5d: check step() with random palindromic seeds
+  * random seeds of length 3 to 10
+    - failed on step 1 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "101"
+    - tap  = 2
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 to 20
+    - failed on step 2 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "00010001000"
+    - tap  = 5
+    - failed on trial 1 of 100
+
+  * random seeds of length 20 to 50
+    - failed on step 2 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "0110011100001000011100110"
+    - tap  = 19
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 5e: check step() with random seeds and tap exactly in middle
+  * random seeds of length 7
+    - failed on step 3 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "1100001"
+    - tap  = 4
+    - failed on trial 1 of 100
+
+  * random seeds of length 11
+    - failed on step 4 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "00101000011"
+    - tap  = 6
+    - failed on trial 1 of 100
+
+  * random seeds of length 21
+    - failed on step 1 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "001101101001111111011"
+    - tap  = 11
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 5f: check step() with random palindromic seeds and tap exactly in middle
+  * random seeds of length 7
+    - failed on step 1 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "1110111"
+    - tap  = 4
+    - failed on trial 1 of 100
+
+  * random seeds of length 11
+    - failed on step 4 of 1000
+    - student   = 1
+    - reference = 0
+
+    - seed = "01000000010"
+    - tap  = 6
+    - failed on trial 1 of 100
+
+  * random seeds of length 21
+    - failed on step 1 of 1000
+    - student   = 0
+    - reference = 1
+
+    - seed = "111101100101001101111"
+    - tap  = 11
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 5g: check step() with corner case seeds and taps
+  * seed = "01101000010", tap = 2
+    - failed on step 4 of 100000
+    - student   = 0
+    - reference = 1
+
+  * seed = "01101000010", tap = 10
+    - failed on step 1 of 100000
+    - student   = 0
+    - reference = 1
+
+  * seed = "01101000010", tap = 11
+
+    java.lang.ArrayIndexOutOfBoundsException: 11
+
+    LFSR.bitAt(LFSR.java:44)
+    LFSR.step(LFSR.java:65)
+    TestLFSR.isCorrectStep(TestLFSR.java:195)
+    TestLFSR.checkStep(TestLFSR.java:186)
+    TestLFSR.test5g(TestLFSR.java:867)
+    TestLFSR.main(TestLFSR.java:1130)
+    TigerFileTestLFSR.main(TigerFileTestLFSR.java:3)
+
+
+  * seed = "01101000010", tap = 1
+    - failed on step 1 of 100000
+    - student   = 1
+    - reference = 0
+
+  * seed = "00000000000", tap = 9
+  * seed = "11111111111", tap = 4
+    - failed on step 5 of 100000
+    - student   = 0
+    - reference = 1
+
+  * seed = "01", tap = 2
+
+    java.lang.ArrayIndexOutOfBoundsException: 2
+
+    LFSR.bitAt(LFSR.java:44)
+    LFSR.step(LFSR.java:65)
+    TestLFSR.isCorrectStep(TestLFSR.java:195)
+    TestLFSR.checkStep(TestLFSR.java:186)
+    TestLFSR.test5g(TestLFSR.java:871)
+    TestLFSR.main(TestLFSR.java:1130)
+    TigerFileTestLFSR.main(TigerFileTestLFSR.java:3)
+
+
+  * seed = "01", tap = 1
+  * seed = "1", tap = 1
+
+    java.lang.ArrayIndexOutOfBoundsException: 1
+
+    LFSR.bitAt(LFSR.java:44)
+    LFSR.step(LFSR.java:65)
+    TestLFSR.isCorrectStep(TestLFSR.java:195)
+    TestLFSR.checkStep(TestLFSR.java:186)
+    TestLFSR.test5g(TestLFSR.java:873)
+    TestLFSR.main(TestLFSR.java:1130)
+    TigerFileTestLFSR.main(TigerFileTestLFSR.java:3)
+
+
+==> FAILED
+
+Test 6a: check generate(k) with seeds, taps, and k from checklist
+  * seed = "01101000010", tap = 9, k = 1
+    - failed on call 1 of 100000
+    - student   generate(1) = 1789
+    - reference generate(1) = 1
+
+  * seed = "01101000010", tap = 9, k = 5
+    - failed on call 1 of 100000
+    - student   generate(5) = 1789
+    - reference generate(5) = 25
+
+  * seed = "01101000010", tap = 9, k = 8
+    - failed on call 1 of 100000
+    - student   generate(8) = 1789
+    - reference generate(8) = 201
+
+  * seed = "01101000010", tap = 4, k = 5
+    - failed on call 1 of 100000
+    - student   generate(5) = 1900
+    - reference generate(5) = 9
+
+  * seed = "01101000010100010000", tap = 17, k = 8
+    - failed on call 1 of 100000
+    - student   generate(8) = 412800
+    - reference generate(8) = 42
+
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59, k = 8
+    - failed on call 1 of 100000
+    - student   generate(8) = -441635342
+    - reference generate(8) = 153
+
+==> FAILED
+
+Test 6b: check generate(k) with random seeds, random taps, and k = 1
+  * random seeds of length 3 to 10 and k = 1
+    - failed on call 1 of 1000
+    - student   generate(1) = 114
+    - reference generate(1) = 1
+
+    - seed = "1100101"
+    - tap  = 2
+    - k  = 1
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 to 20 and k = 1
+    - failed on call 1 of 1000
+    - student   generate(1) = 20937
+    - reference generate(1) = 0
+
+    - seed = "00010001101000111"
+    - tap  = 12
+    - k  = 1
+    - failed on trial 1 of 100
+
+  * random seeds of length 20 to 30 and k = 1
+    - failed on call 1 of 1000
+    - student   generate(1) = 526768
+    - reference generate(1) = 0
+
+    - seed = "100011111100111110000"
+    - tap  = 8
+    - k  = 1
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 6c: check generate(k) with random seeds, random taps, and k = 1
+  * random seeds of length 30 to 60 and k = 1
+    - failed on call 1 of 1000
+    - student   generate(1) = -1685017704
+    - reference generate(1) = 0
+
+    - seed = "0110110101000111000101011111011101011"
+    - tap  = 34
+    - k  = 1
+    - failed on trial 1 of 100
+
+  * random seeds of length 60 to 200 and k = 1
+    - failed on call 1 of 1000
+    - student   generate(1) = -1232560436
+    - reference generate(1) = 0
+
+    - seed = "101000010100010100010110110111101010001011111111000000010100110001001111011110110010111111111000000011001001101101001110000000100100010110011110011001100011101010111101011000101111101"
+    - tap  = 5
+    - k  = 1
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 6d: check generate(k) with random seeds, random taps, and fixed k
+  * random seeds of length 10 and k = 2
+    - failed on call 1 of 1000
+    - student   generate(2) = 638
+    - reference generate(2) = 3
+
+    - seed = "0101000001"
+    - tap  = 9
+    - k  = 2
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 and k = 3
+    - failed on call 1 of 1000
+    - student   generate(3) = 307
+    - reference generate(3) = 2
+
+    - seed = "1001111010"
+    - tap  = 5
+    - k  = 3
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 and k = 5
+    - failed on call 1 of 1000
+    - student   generate(5) = 565
+    - reference generate(5) = 17
+
+    - seed = "1010100100"
+    - tap  = 5
+    - k  = 5
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 and k = 9
+    - failed on call 1 of 1000
+    - student   generate(9) = 131
+    - reference generate(9) = 151
+
+    - seed = "1110100011"
+    - tap  = 8
+    - k  = 9
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 6e: check generate(k) with random seeds, taps, and k
+  * random seeds of length 6 to 20 and random k between 1 and 5
+    - failed on call 1 of 1000
+    - student   generate(1) = 15798
+    - reference generate(1) = 1
+
+    - seed = "11101000000000"
+    - tap  = 11
+    - k  = 1
+    - failed on trial 1 of 100
+
+  * random seeds of length 20 to 30 and random k between 5 and 19
+    - failed on call 1 of 1000
+    - student   generate(12) = 916312
+    - reference generate(12) = 536
+
+    - seed = "10011101000010101111"
+    - tap  = 6
+    - k  = 12
+    - failed on trial 1 of 100
+
+  * random seeds of length 30 to 200 and random k between 5 and 19
+    - failed on call 1 of 1000
+    - student   generate(15) = -1452261302
+    - reference generate(15) = 928
+
+    - seed = "001100010001010010010010000011111110010000001000111011000011011001010100001111110000010111111111011101101100100001111100000011100000101101000011011011101101001111111001111111100111101"
+    - tap  = 127
+    - k  = 15
+    - failed on trial 1 of 25
+
+==> FAILED
+
+Test 6f: check generate(k) with k >= seed length
+  * seed = "01101000010", tap = 9, k = 11
+    - failed on call 1 of 100000
+    - student   generate(11) = 1789
+    - reference generate(11) = 1609
+
+  * seed = "01101000010", tap = 9, k = 12
+    - failed on call 1 of 100000
+    - student   generate(12) = 1789
+    - reference generate(12) = 3219
+
+  * seed = "01101000010", tap = 9, k = 30
+    - failed on call 1 of 100000
+    - student   generate(30) = 1789
+    - reference generate(30) = 844066394
+
+  * random seeds of length 10 and k = 20
+    - failed on call 1 of 1000
+    - student   generate(20) = 821
+    - reference generate(20) = 24696
+
+    - seed = "1111111000"
+    - tap  = 8
+    - k  = 20
+    - failed on trial 1 of 100
+
+  * random seeds of length 10 and k = 31
+    - failed on call 1 of 1000
+    - student   generate(31) = 434
+    - reference generate(31) = 1434835504
+
+    - seed = "1001111001"
+    - tap  = 3
+    - k  = 31
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 7a: check that step() and bitAt() are consistent for fixed seeds and taps
+  * seed = "01101000010", tap = 9
+  * seed = "01101000010", tap = 4
+  * seed = "01101000010100010000", tap = 17
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59
+==> passed
+
+Test 7b: check that generate(k) and bitAt() are consistent for fixed seeds, taps, and k
+  * seed = "01101000010", tap = 9, k = 5
+    - failed on iteration 1 of 1000
+    - student generate(5)                            = 1789
+    - student bitAt(5), ..., bitAt(1)                = 11101
+    - decimal representation of the 5 rightmost bits = 29
+    - generate(5) should return the integer corresponding to the 5 rightmost bits
+
+  * seed = "01101000010", tap = 4, k = 2
+    - failed on iteration 1 of 1000
+    - student generate(2)                            = 1900
+    - student bitAt(2), ..., bitAt(1)                = 00
+    - decimal representation of the 2 rightmost bits = 0
+    - generate(2) should return the integer corresponding to the 2 rightmost bits
+
+  * seed = "01101000010100010000", tap = 17, k = 20
+  * seed = "011101110101101011110100101010010111011110111011101100001011", tap = 59, k = 7
+    - failed on iteration 1 of 1000
+    - student generate(7)                            = -441635342
+    - student bitAt(7), ..., bitAt(1)                = 1110010
+    - decimal representation of the 7 rightmost bits = 114
+    - generate(7) should return the integer corresponding to the 7 rightmost bits
+
+==> FAILED
+
+Test 8: check that multiple LFSR objects can be created at the same time
+==> passed
+
+Test 9a: check random intermixed sequence of calls to length(), bitAt(), toString(),
+         step(), and generate(), with probabilities (p1, p2, p3, p4, p5),
+         respectively, for LFSR from assignment specification
+  * p = (0.0, 0.5, 0.0, 0.5, 0.0) using seed "01101000010" and tap 9
+    - failed on operation 5 of 100
+    - student   step() returns 1
+    - reference step() returns 0
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.bitAt(10)     ==> 1
+        lfsr.step()       ==> 1
+        lfsr.step()       ==> 1
+        lfsr.step()       ==> 0
+        lfsr.step()       ==> 1
+
+    - failed on trial 1 of 100
+
+  * p = (0.0, 0.5, 0.0, 0.0, 0.5) using seed "01101000010" and tap 9
+    - failed on operation 2 of 100
+    - student   generate(4) returns 1789
+    - reference generate(4) returns 12
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.bitAt(8)     ==> 0
+        lfsr.generate(4)  ==> 1789
+
+    - failed on trial 1 of 100
+
+  * p = (0.0, 0.0, 0.5, 0.5, 0.0) using seed "01101000010" and tap 9
+    - failed on operation 12 of 100
+    - student   step() returns 1
+    - reference step() returns 0
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.toString()   ==> "01101000010"
+        lfsr.toString()   ==> "01101000010"
+        lfsr.toString()   ==> "01101000010"
+        lfsr.toString()   ==> "01101000010"
+        lfsr.toString()   ==> "01101000010"
+        lfsr.toString()   ==> "01101000010"
+        lfsr.step()       ==> 1
+        lfsr.step()       ==> 1
+        lfsr.step()       ==> 0
+        lfsr.toString()   ==> "01000010110"
+        lfsr.toString()   ==> "01000010110"
+        lfsr.step()       ==> 1
+
+    - failed on trial 1 of 100
+
+  * p = (0.0, 0.0, 0.5, 0.0, 0.5) using seed "01101000010" and tap 9
+    - failed on operation 2 of 100
+    - student   generate(6) returns 1789
+    - reference generate(6) returns 50
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.toString()   ==> "01101000010"
+        lfsr.generate(6)  ==> 1789
+
+    - failed on trial 1 of 100
+
+  * p = (0.0, 0.0, 0.0, 0.5, 0.5) using seed "01101000010" and tap 9
+    - failed on operation 1 of 100
+    - student   generate(8) returns 1789
+    - reference generate(8) returns 201
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.generate(8)  ==> 1789
+
+    - failed on trial 1 of 100
+
+  * p = (0.1, 0.3, 0.2, 0.2, 0.2) using seed "01101000010" and tap 9
+    - failed on operation 4 of 100
+    - student   generate(9) returns 1789
+    - reference generate(9) returns 402
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01101000010", 9)
+        lfsr.toString()   ==> "01101000010"
+        lfsr.length()     ==> 11
+        lfsr.bitAt(1)     ==> 0
+        lfsr.generate(9)  ==> 1789
+
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 9b: check random intermixed sequence of calls to length(), bitAt(), toString(),
+         step(), and generate(), with probabilities (p1, p2, p3, p4, p5), respectively,
+         for random LFSRs
+  * p = (0.0, 0.5, 0.0, 0.5, 0.0) using random seeds of length 5 to 12
+    - failed on operation 1 of 100
+    - student   step() returns 0
+    - reference step() returns 1
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("01001010", 2)
+        lfsr.step()       ==> 0
+
+    - failed on trial 1 of 100
+    - seed = "01001010"
+    - tap  = 2
+
+  * p = (0.0, 0.5, 0.0, 0.0, 0.5) using random seeds of length 5 to 12
+    - failed on operation 4 of 100
+    - student   generate(6) returns 544
+    - reference generate(6) returns 52
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("0001100100", 7)
+        lfsr.bitAt(2)     ==> 0
+        lfsr.bitAt(8)     ==> 0
+        lfsr.bitAt(8)     ==> 0
+        lfsr.generate(6)  ==> 544
+
+    - failed on trial 1 of 100
+    - seed = "0001100100"
+    - tap  = 7
+
+  * p = (0.0, 0.0, 0.5, 0.5, 0.0) using random seeds of length 5 to 12
+    - failed on operation 1 of 100
+    - student   step() returns 0
+    - reference step() returns 1
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("1000010", 5)
+        lfsr.step()       ==> 0
+
+    - failed on trial 1 of 100
+    - seed = "1000010"
+    - tap  = 5
+
+  * p = (0.0, 0.0, 0.5, 0.0, 0.5) using random seeds of length 5 to 12
+    - failed on operation 1 of 100
+    - student   generate(7) returns 3128
+    - reference generate(7) returns 95
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("000011011001", 7)
+        lfsr.generate(7)  ==> 3128
+
+    - failed on trial 1 of 100
+    - seed = "000011011001"
+    - tap  = 7
+
+  * p = (0.0, 0.0, 0.0, 0.5, 0.5) using random seeds of length 5 to 12
+    - failed on operation 1 of 100
+    - student   generate(2) returns 171
+    - reference generate(2) returns 0
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("11111110", 7)
+        lfsr.generate(2)  ==> 171
+
+    - failed on trial 1 of 100
+    - seed = "11111110"
+    - tap  = 7
+
+  * p = (0.1, 0.3, 0.2, 0.2, 0.2) using random seeds of length 5 to 12
+    - failed on operation 2 of 100
+    - student   step() returns 0
+    - reference step() returns 1
+
+    - sequence of LFSR operations was:
+        LFSR lfsr = new LFSR("1010111100", 2)
+        lfsr.length()     ==> 10
+        lfsr.step()       ==> 0
+
+    - failed on trial 1 of 100
+    - seed = "1010111100"
+    - tap  = 2
+
+==> FAILED
+
+
+Total: 5/23 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of LFSR
+*-----------------------------------------------------------
+Running 10 total tests.
+
+Test 1a-1e: total memory usage for LFSR of length n
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       16          120
+=> passed       32          184
+=> passed       64          312
+=> passed      128          568
+=> passed      256         1080
+=> passed      512         2104
+=> passed     1024         4152
+=> passed     2048         8248
+=> passed     4096        16440
+=> passed     8192        32824
+==> 10/10 tests passed
+
+
+Estimated memory: 4.00 n + 56.00   (R^2 = 1.000)
+
+Maximum allowed memory: 4n + 128 bytes
+
+Total: 10/10 tests passed!
+
+
+================================================================
+
+
+
+********************************************************************************
+*  TESTING CORRECTNESS (substituting reference LFSR.java)
+********************************************************************************
+
+Testing correctness of PhotoMagic
+*-----------------------------------------------------------
+Running 15 total tests.
+
+Test 0a: check correctness of transform() for inputs from assignment specification
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xpipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 0b: check correctness of main() for inputs from assignment specification
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+  * Xpipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+==> FAILED
+
+Test 0c: check that transform() does not mutate the Picture argument
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns its Picture argument
+      (instead of creating and returning a new Picture object)
+    - memory address of Picture argument     = 0x65B3120A
+    - memory address of Picture return value = 0x65B3120A
+
+  * Xpipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns its Picture argument
+      (instead of creating and returning a new Picture object)
+    - memory address of Picture argument     = 0x50040F0C
+    - memory address of Picture return value = 0x50040F0C
+
+==> FAILED
+
+Test 1: check correctness of transform() with color images
+  * baboon-red.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * baboon-green.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * baboon-blue.png, password = "01101000010100010000", tap = 16
+00001010001000011101 29
+01000100001110110101 21
+10000111011010100000 0
+11101101010000011110 30
+10101000001111000111 7
+00000111100011100101 5
+11110001110010101111 15
+00111001010111111101 29
+00101011111110110101 21
+01111111011010110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * scarpet-cookies.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xbaboon-red.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xbaboon-green.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xbaboon-blue.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xscarpet-cookies.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xshield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * Xjava.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 2: check correctness of transform() with grayscale images
+  * baboon-gray.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 3: check correctness of transform() with random color images
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 512-by-512, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 4: check correctness of transform() with random grayscale images of different dimensions
+  * 100-by-100, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 100-by-200, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 200-by-100, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 400-by-100, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 100-by-400, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 123-by-543, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 1-by-100, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * 100-by-1, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 5: check correctness of transform() with different passwords and seeds
+  * pipe.png, password = "10001", tap = 3
+10111 23
+01010 10
+00010 2
+01011 11
+00111 7
+11000 24
+11011 27
+10101 21
+00001 1
+00101 5
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "001100", tap = 5
+001010 10
+001111 15
+101000 8
+011100 28
+010010 18
+011011 27
+110110 22
+001101 13
+101011 11
+111110 30
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "110100110", tap = 5
+011011100 28
+110010001 17
+000101000 8
+100001010 10
+101011010 26
+101001111 15
+111111011 27
+101100100 4
+010010010 18
+001011011 27
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "0001001000", tap = 7
+0100010000 16
+1000001100 12
+0110010011 19
+1001101000 8
+0100001001 9
+0100101010 10
+0101000011 3
+0001111010 26
+1101011101 29
+1110101101 13
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "01101111110", tap = 9
+11111011010 26
+01101000010 2
+00001011001 25
+01100100100 4
+10010011110 30
+01111011011 27
+01101110010 18
+11001011010 26
+01101011100 28
+01110011000 24
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "00110100010100010010", tap = 17
+10001010001001010010 18
+01000100101001011011 27
+10010100101101101100 12
+10010110110110000110 6
+11011011000011000100 4
+01100001100010000000 0
+00110001000000001101 13
+00100000000110110111 23
+00000011011011100100 4
+01101101110010000011 3
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "111100001001010000011100001000", tap = 23
+000100101000001110000100010111 23
+010100000111000010001011101010 10
+000011100001000101110101001101 13
+110000100010111010100110100000 0
+010001011101010011010000011010 26
+101110101001101000001101010101 21
+010100110100000110101010111110 30
+011010000011010101011111011110 30
+000001101010101111101111001110 14
+110101010111110111100111001010 10
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "001010101111001001100011110100111011", tap = 25
+010111100100110001111010011101110111 23
+110010011000111101001110111011100111 7
+001100011110100111011101110011110110 22
+001111010011101110111001111011001111 15
+101001110111011100111101100111111100 28
+111011101110011110110011111110000011 3
+110111001111011001111111000001111010 26
+100111101100111111100000111101001101 13
+110110011111110000011110100110111100 28
+001111111000001111010011011110000111 7
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "100100100011010011011000100011110011011100110111", tap = 43
+010001101001101100010001111001101110011011111010 26
+110100110110001000111100110111001101111101010010 18
+011011000100011110011011100110111110101001010111 23
+100010001111001101110011011111010100101011111100 28
+000111100110111001101111101010010101111110010010 18
+110011011100110111110101001010111111001001011010 26
+101110011011111010100101011111100100101101001110 14
+001101111101010010101111110010010110100111010001 17
+111110101001010111111001001011010011101000111001 25
+010100101011111100100101101001110100011100110101 21
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "110010100111101011011101001001100011100111110110010111110110", tap = 59
+010011110101101110100100110001110011111011001011111011001011 11
+111010110111010010011000111001111101100101111101100101111010 26
+011011101001001100011100111110110010111110110010111101000111 7
+110100100110001110011111011001011111011001011110100011110110 22
+010011000111001111101100101111101100101111010001111011001110 14
+100011100111110110010111110110010111101000111101100111011010 26
+110011111011001011111011001011110100011110110011101101010010 18
+111101100101111101100101111010001111011001110110101001001010 10
+110010111110110010111101000111101100111011010100100101000011 3
+011111011001011110100011110110011101101010010010100001101011 11
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "1011111010001111010111011001101001101110100100011001100001100111110111110101000001001000101000000110", tap = 63
+1101000111101011101100110100110111010010001100110000110011111011111010100000100100010100000011001101 13
+0011110101110110011010011011101001000110011000011001111101111101010000010010001010000001100110110010 18
+1010111011001101001101110100100011001100001100111110111110101000001001000101000000110011011001011110 30
+1101100110100110111010010001100110000110011111011111010100000100100010100000011001101100101111000101 5
+0011010011011101001000110011000011001111101111101010000010010001010000001100110110010111100010100010 2
+1001101110100100011001100001100111110111110101000001001000101000000110011011001011110001010001011000 24
+0111010010001100110000110011111011111010100000100100010100000011001101100101111000101000101100001100 12
+1001000110011000011001111101111101010000010010001010000001100110110010111100010100010110000110000100 4
+0011001100001100111110111110101000001001000101000000110011011001011110001010001011000011000010010011 19
+0110000110011111011111010100000100100010100000011001101100101111000101000101100001100001001001100010 2
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+  * pipe.png, password = "001111100110100001000011001001101010011000011110011110111110000111111000100011010001111011010001011000101010011001110010110011000000000110101010101011", tap = 97
+110011010000100001100100110101001100001111001111011111000011111100010001101000111101101000101100010101001100111001011001100000000011010101010101101000 8
+101000010000110010011010100110000111100111101111100001111110001000110100011110110100010110001010100110011100101100110000000001101010101010110100001001 9
+001000011001001101010011000011110011110111110000111111000100011010001111011010001011000101010011001110010110011000000000110101010101011010000100101011 11
+001100100110101001100001111001111011111000011111100010001101000111101101000101100010101001100111001011001100000000011010101010101101000010010101110101 21
+010011010100110000111100111101111100001111110001000110100011110110100010110001010100110011100101100110000000001101010101010110100001001010111010100101 5
+101010011000011110011110111110000111111000100011010001111011010001011000101010011001110010110011000000000110101010101011010000100101011101010010100001 1
+001100001111001111011111000011111100010001101000111101101000101100010101001100111001011001100000000011010101010101101000010010101110101001010000101011 11
+000111100111101111100001111110001000110100011110110100010110001010100110011100101100110000000001101010101010110100001001010111010100101000010101111100 28
+110011110111110000111111000100011010001111011010001011000101010011001110010110011000000000110101010101011010000100101011101010010100001010111110000110 6
+111011111000011111100010001101000111101101000101100010101001100111001011001100000000011010101010101101000010010101110101001010000101011111000011001000 8
+    - transform() returns wrong Picture
+    - student solution returns original Picture, not transformed one
+
+==> FAILED
+
+Test 6a: check that calling transform() twice recovers the original image for grayscale image
+  * baboon-gray.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+==> passed
+
+Test 6b: check that calling transform() twice recovers the original image for color images
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * Xpipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * baboon-red.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * baboon-green.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * baboon-blue.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * scarpet-cookies.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+==> passed
+
+Test 7a: check correctness of main() for grayscale images
+  * baboon-gray.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+==> FAILED
+
+Test 7b: check correctness of main() for color images
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+  * Xshield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+  * Xjava.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+    - main() shows wrong Picture
+    - student solution shows original Picture, not transformed one
+
+==> FAILED
+
+Test 8: check that main() is consistent with transform()
+  * baboon-gray.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+==> passed
+
+Test 9a: check that transform() does not call show()
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * Xpipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+==> passed
+
+Test 9b: check that main() calls show() exactly once
+  * baboon-gray.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * pipe.png, password = "01101000010100010000", tap = 17
+00001010001000000101 5
+01000100000010101011 11
+10000001010101101100 12
+00101010110110010001 17
+01011011001000101111 15
+01100100010111110000 16
+10001011111000001000 8
+01111100000100011010 26
+10000010001101010011 19
+01000110101001110010 18
+  * shield.png, password = "010101010101010101010101010101", tap = 23
+101010101010101010101010111111 31
+010101010101010101011111111111 31
+101010101010101111111111111111 31
+010101010111111111111111111111 31
+101011111111111111111111111101 29
+111111111111111111111110101010 10
+111111111111111111010101000000 0
+111111111111101010100000000000 0
+111111110101010000000000000000 0
+111010101000000000000000001010 10
+  * java.png, password = "001110001111000100001101010010000100010010000000001100000100", tap = 59
+000111100010000110101001000010001001000000000110000010001001 9
+110001000011010100100001000100100000000011000001000100100100 4
+100001101010010000100010010000000001100000100010010010001001 9
+110101001000010001001000000000110000010001001001000100110001 17
+100100001000100100000000011000001000100100100010011000101111 15
+000100010010000000001100000100010010010001001100010111110110 22
+001001000000000110000010001001001000100110001011111011000110 6
+100000000011000001000100100100010011000101111101100011001101 13
+000001100000100010010010001001100010111110110001100110110000 16
+110000010001001001000100110001011111011000110011011000000001 1
+==> passed
+
+
+Total: 5/15 tests passed!
+
+
+================================================================
